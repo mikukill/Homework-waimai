@@ -1,0 +1,68 @@
+--create database waimai082
+--use waimai082
+create table Customer(
+	Cid int NOT NULL PRIMARY KEY,
+	Cname nvarchar(30) NOT NULL,
+	Cpassword nvarchar(30) NOT NULL,
+	Cmail nvarchar(50) NOT NULL,
+	Csex char(1) check(Csex='[0-1]'),
+	Cwallet nvarchar(30) NOT NULL,--绑定的支付宝账号
+	Cphone1 VARCHAR(11) NOT NULL,--最多使用3个不同的地址和手机号码
+	Cphone2 VARCHAR(11),
+	Cphone3 VARCHAR(11),
+	Cadd1 VARCHAR(45) NOT NULL,
+	Cadd2 VARCHAR(45),
+	Cadd3 VARCHAR(45),
+)
+create table Business(
+	Bid int NOT NULL PRIMARY KEY,
+	Bname nvarchar(30) NOT NULL,
+	Bphone VARCHAR(12) NOT NULL,
+	Badd VARCHAR(45) NOT NULL,
+	BownerName nvarchar(30) NOT NULL,
+	BownerID char(18) NOT NULL check (BownerID not like '%[^0-9]%'),
+	Bstatu char(1) NOT NULL check(Bstatu like '[0-1]'),
+	Bdiscription nvarchar(50),
+	Ballowence1 varchar(200) NOT NULL,--存图片url
+	Ballowence2 varchar(200) NOT NULL,--存图片url
+)
+create table Foods(
+	Fid int NOT NULL PRIMARY KEY,
+	Bid int NOT NULL FOREIGN KEY(Bid) REFERENCES Business(Bid),
+	Fname nvarchar(30) NOT NULL,
+	Fdepart int,--食物分类
+	Fdiscription nvarchar(50),
+	Fpicture varchar(200) NOT NULL,
+	Fprice int NOT NULL check(Fprice>0),
+	Fmaxnum int NOT NULL check(Fprice>0),--限购数目
+	Fstatu char(1) NOT NULL,--上架状态 
+)
+create table Delivery(
+	Did int NOT NULL PRIMARY KEY,
+	Dphone VARCHAR(16) NOT NULL,
+	Dname nvarchar(30) NOT NULL,
+	Dcount int NOT NULL check(Dcount >= 0),
+)
+create table Indent(
+	Iid int NOT NULL PRIMARY KEY,
+	Cid int NOT NULL FOREIGN KEY(Cid) REFERENCES Customer(Cid),
+	Fid int NOT NULL FOREIGN KEY(Fid) REFERENCES Foods(Fid),
+	Did int NOT NULL FOREIGN KEY(Did) REFERENCES Delivery(Did),
+	Icost decimal(7,2) NOT NULL,
+	Istatu char(1) NOT NULL check(Istatu like '[0-9]'),--0未支付，1支付成功，2支付失败，3商家确认
+	--4 骑手抢单，5商家派单，6骑手取餐，7骑手送餐，8送餐成功，9送餐超时 
+	ICadd VARCHAR(45) NOT NULL,
+	ICphone VARCHAR(16) NOT NULL,
+
+) 
+
+create table Cart(
+	CartID int NOT NULL PRIMARY KEY,
+	Cid int NOT NULL FOREIGN KEY(Cid) REFERENCES Customer(Cid),	
+	Fid int FOREIGN KEY(Fid) REFERENCES Foods(Fid),
+	CFnum int check(CFnum>0),
+	CFspe int ,--商品规格
+	Ctime datetime NOT NULL,
+)
+
+
