@@ -1,0 +1,7 @@
+Customer:(Cid,Cname,Cpassword,Cmail,Csex,Cwallet,Cphone1,Cphone2,Cphone3,Cadd1,Cadd2,Cadd3)
+
+Business:(Bid,Bname,Bphone,Badd,BownerName,BownerID,Bstatu,Bdiscription,Ballowence1,Ballowence2)
+
+Foods:(Fid,Bid,Fname,Fdepart,Fspec,Fdiscription,Fpicture,Fprice,Fmaxnum,Fstatu)
+
+Delivery(Did,Dphone,Dname,Dcount)
