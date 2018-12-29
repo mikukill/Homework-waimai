@@ -31,8 +31,9 @@ create table Foods(
 	Bid int NOT NULL FOREIGN KEY(Bid) REFERENCES Business(Bid),
 	Fname nvarchar(30) NOT NULL,
 	Fdepart int,--食物分类
+	Fspec char(2) NOT NULL,--食品规格
 	Fdiscription nvarchar(50),
-	Fpicture varchar(200) NOT NULL,
+	Fpicture varchar(200) NOT NULL,--食品图片链接
 	Fprice int NOT NULL check(Fprice>0),
 	Fmaxnum int NOT NULL check(Fprice>0),--限购数目
 	Fstatu char(1) NOT NULL,--上架状态 
@@ -48,6 +49,10 @@ create table Indent(
 	Cid int NOT NULL FOREIGN KEY(Cid) REFERENCES Customer(Cid),
 	Fid int NOT NULL FOREIGN KEY(Fid) REFERENCES Foods(Fid),
 	Did int NOT NULL FOREIGN KEY(Did) REFERENCES Delivery(Did),
+	Icreatetime datetime NOT NULL,--订单创建时间
+	Istoptime datetime NOT NULL,--订单结束时间
+	Icount int NOT NULL check(Icount>0),--商品数量
+	Fspec char(2) NOT NULL,--食品规格
 	Icost decimal(7,2) NOT NULL,
 	Istatu char(1) NOT NULL check(Istatu like '[0-9]'),--0未支付，1支付成功，2支付失败，3商家确认
 	--4 骑手抢单，5商家派单，6骑手取餐，7骑手送餐，8送餐成功，9送餐超时 
@@ -64,5 +69,13 @@ create table Cart(
 	CFspe int ,--商品规格
 	Ctime datetime NOT NULL,
 )
-
-
+create table Evaluation(
+	Eid int NOT NULL PRIMARY KEY,
+	Iid int NOT NULL FOREIGN KEY(Iid) REFERENCES Indent(Iid),
+	Fid int NOT NULL FOREIGN KEY(Fid) REFERENCES Foods(Fid),
+	Did int NOT NULL FOREIGN KEY(Did) REFERENCES Delivery(Did),
+	Ei nvarchar(200),--对订单的评价
+	Eb nvarchar(200),--对商家的评价
+	Ef nvarchar(200),--对食品的评价
+	Ed nvarchar(200),--对骑手的评价
+)
