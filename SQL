@@ -35,7 +35,7 @@ create table Foods(
 	Fdiscription nvarchar(50),
 	Fpicture varchar(200) NOT NULL,--食品图片链接
 	Fprice int NOT NULL check(Fprice>0),
-	Fmaxnum int NOT NULL check(Fprice>0),--限购数目
+	Fmaxnum int NOT NULL check(Fmaxnum>0),--限购数目
 	Fstatu char(1) NOT NULL,--上架状态 
 )
 create table Delivery(
